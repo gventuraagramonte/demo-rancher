@@ -1,13 +1,13 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata: { name: node-demo, namespace: demo }
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-demo
+  namespace: demo
 spec:
-  ingressClassName: traefik
-  tls: [ { hosts: [ demo.observability.local ], secretName: observability-tls } ]
-  rules:
-    - host: demo.observability.local
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend: { service: { name: node-demo, port: { number: 3000 } } }
+  selector:
+    app: node-demo
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  type: ClusterIP

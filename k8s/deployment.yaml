@@ -20,10 +20,30 @@ spec:
     spec:
       containers:
       - name: node-demo
-        image: node-demo:latest
+        image: gio0603/demo-rancher:222f34a
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
         livenessProbe:
-          httpGet: {path: /healthz, port: 3000}
+          httpGet:
+            path: /healthz
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 2
+          failureThreshold: 3
         readinessProbe:
-          httpGet: {path: /readyz, port: 3000}
+          httpGet:
+            path: /readyz
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 2
+          failureThreshold: 3
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "256Mi"

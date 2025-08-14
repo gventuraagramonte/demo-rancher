@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: node-demo
+  namespace: demo
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+      - demo.observability.local
+      secretName: observability-tls
+  rules:
+    - host: demo.observability.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: node-demo
+                port:
+                  number: 80
