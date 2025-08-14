@@ -7,10 +7,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-      - demo.observability.local
-      secretName: observability-tls
+      - demo.local
+      secretName: demo-tls
   rules:
-    - host: demo.observability.local
+    - host: demo.local
       http:
         paths:
           - path: /
