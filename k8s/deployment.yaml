@@ -25,8 +25,8 @@ spec:
           ports:
             - containerPort: 3000
           env:
-            - name: NODE_OPTIONS
-              value: "--require @opentelemetry/auto-instrumentations-node/register"
+            # - name: NODE_OPTIONS
+            #   value: "--require @opentelemetry/auto-instrumentations-node/register"
             - name: OTEL_TRACES_EXPORTER
               value: "otlp"
             - name: OTEL_EXPORTER_OTLP_PROTOCOL
