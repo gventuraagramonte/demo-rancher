@@ -19,31 +19,48 @@ spec:
         app: node-demo
     spec:
       containers:
-      - name: node-demo
-        image: gio0603/demo-rancher:dd6dd20
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 3000
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 3000
-          initialDelaySeconds: 10
-          periodSeconds: 5
-          timeoutSeconds: 2
-          failureThreshold: 3
-        readinessProbe:
-          httpGet:
-            path: /readyz
-            port: 3000
-          initialDelaySeconds: 5
-          periodSeconds: 5
-          timeoutSeconds: 2
-          failureThreshold: 3
-        resources:
-          requests:
-            cpu: "100m"
-            memory: "128Mi"
-          limits:
-            cpu: "500m"
-            memory: "256Mi"
+        - name: node-demo
+          image: gio0603/demo-rancher:dd6dd20
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          env:
+            - name: NODE_OPTIONS
+              value: "--require @opentelemetry/auto-instrumentations-node/register"
+            - name: OTEL_TRACES_EXPORTER
+              value: "otlp"
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: "grpc"
+            - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+              value: "coralogix-opentelemetry-collector.observability.svc:4317"
+            - name: OTEL_SERVICE_NAME
+              value: "demo-express"
+            - name: OTEL_NODE_RESOURCE_DETECTORS
+              value: "all"
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: "cx.application.name=demo,cx.subsystem.name=express,service.namespace=demo"
+            - name: OTEL_TRACES_SAMPLER
+              value: "always_on"
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
