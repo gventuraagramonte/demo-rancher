@@ -4,10 +4,10 @@ metadata:
   name: node-demo
   namespace: demo
 spec:
-  ingressClassName: traefik
+  ingressClassName: nginx
   tls:
     - hosts:
-      - demo.local
+        - demo.local
       secretName: demo-tls
   rules:
     - host: demo.local
