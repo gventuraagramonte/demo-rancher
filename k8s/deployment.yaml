@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: node-demo
-          image: gio0603/demo-rancher:a9a802f
+          image: gio0603/demo-rancher:1561b50
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
